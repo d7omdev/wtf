@@ -10,6 +10,8 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"golang.org/x/term"
+
 	"wtf/internal/color"
 	"wtf/internal/config"
 	"wtf/internal/provider"
@@ -36,7 +38,9 @@ var initCmd = &cobra.Command{
 		default:
 			return fmt.Errorf("unsupported shell %q (supported: zsh, bash)", sh)
 		}
-		fmt.Fprintln(os.Stderr, color.Dim.Render(`# add to your rc file:  eval "$(wtf init `+sh+`)"`))
+		if term.IsTerminal(int(os.Stdout.Fd())) {
+			fmt.Fprintln(os.Stderr, color.Dim.Render(`# add to your rc file:  eval "$(wtf init `+sh+`)"`))
+		}
 		return nil
 	},
 }
