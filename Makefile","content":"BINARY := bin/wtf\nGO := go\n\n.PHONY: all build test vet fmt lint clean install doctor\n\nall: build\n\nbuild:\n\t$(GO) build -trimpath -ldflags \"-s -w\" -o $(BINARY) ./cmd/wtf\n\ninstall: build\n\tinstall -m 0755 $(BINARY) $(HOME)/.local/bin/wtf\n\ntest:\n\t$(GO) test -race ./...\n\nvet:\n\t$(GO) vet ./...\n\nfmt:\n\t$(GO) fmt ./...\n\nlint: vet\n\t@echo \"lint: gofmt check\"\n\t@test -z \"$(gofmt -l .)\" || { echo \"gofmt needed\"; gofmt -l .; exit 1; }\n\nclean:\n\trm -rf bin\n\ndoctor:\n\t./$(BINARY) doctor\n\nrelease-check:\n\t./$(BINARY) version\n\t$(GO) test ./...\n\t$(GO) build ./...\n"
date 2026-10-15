@@ -1,0 +1,67 @@
+# wtf
+
+A small, fast CLI: **why did that last command fail (or succeed), and how do I fix it?**
+
+`wtf` reads state captured by shell hooks at command time (command, exit code,
+duration, cwd, git branch, and the actual output trace) and asks an LLM to explain
+it in one or two sentences. `wtf fix` produces a corrected command, prints it,
+and runs it after a y/N confirmation.
+
+## Install
+
+```sh
+go build -o ~/.local/bin/wtf ./cmd/wtf
+# zsh:
+eval "$(wtf init zsh)"        # add this to ~/.zshrc
+# bash:
+eval "$(wtf init bash)"       # add this to ~/.bashrc
+```
+
+For exact output traces, either run inside [tmux](https://github.com/tmux/tmux)
+(the hooks slice the pane history) or start a recorded shell:
+
+```sh
+wtf shell                     # runs $SHELL in a pty that tees all output
+```
+
+Run `wtf doctor` to verify hooks/providers.
+
+## Commands
+
+- `wtf` — did the last command succeed or fail, and why (1-2 sentences)
+- `wtf explain` — same, in 2-3 sentences
+- `wtf fix` — print the corrected command, then run it after y/N
+- `wtf use [provider] [model]` — interactive picker (or set directly with args)
+- `wtf init zsh|bash` — print the shell hooks for `eval`
+- `wtf shell` — run your shell with full output recording
+- `wtf doctor` — install/health check of providers and hooks
+- `wtf version`
+
+## Providers
+
+Claude Code CLI (`claude -p --restricted`), Codex CLI (`codex exec`), OpenCode
+(`opencode acp`, hand-rolled ACP/JSON-RPC client that walks nd-json on stdio),
+and Ollama (`POST /api/chat` with `"stream":false`, models via `/api/tags`),
+plus an in-memory `mock` for testing (`WTF_MOCK_RESPONSE="..." wtf --provider mock`).
+
+```sh
+wtf use                       # interactive provider + model picker
+wtf use ollama qwen2.5-coder:7b
+wtf --provider claude --model sonnet explain
+```
+
+Config lives in `$XDG_CONFIG_HOME/wtf/config.json` (`~/.config/wtf/config.json`).
+
+## Brevity/enforcement
+
+Model answers are clamped structurally (sentence caps + word caps, markdown/quote
+stripping). Limits: status = 2 sentences/25 words, explain = 3 sentences/60 words,
+fix = one line.
+
+## Color
+
+Colors respect `NO_COLOR` and non-TTY (piped) output via lipgloss.
+
+## No Python
+
+This project is Go only. Do not propose Python.
