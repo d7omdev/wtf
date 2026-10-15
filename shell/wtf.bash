@@ -14,6 +14,10 @@ __wtf_prompt() {
   local cmd
   cmd="$(command fc -ln -1 2>/dev/null)"
   cmd="${cmd#"${cmd%%[![:space:]]*}"}" # ltrim
+  # Don't record wtf's own invocations (keeps prior command available).
+  case "$cmd" in
+    wtf|wtf\ *|*/wtf|*/wtf\ *) return 0 ;;
+  esac
   [ -n "$cmd" ] || return 0
   command mkdir -p -- "$__wtf_dir" 2>/dev/null || return 0
   printf '%s' "$cmd" > "$__wtf_dir/cmd"

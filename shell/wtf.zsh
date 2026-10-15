@@ -11,12 +11,20 @@
 
   typeset -g __wtf_base="$base"
   typeset -g __wtf_dir="$base/state/$tty_id"
-  typeset -g __wtf_cmd="" __wtf_t0="" __wtf_off0=0
+  typeset -g __wtf_cmd="" __wtf_t0="" __wtf_off0=0 __wtf_skip=0
 
   zmodload zsh/datetime 2>/dev/null
   zmodload -F zsh/stat b:zstat 2>/dev/null
 
   __wtf_preexec() {
+    # Never record wtf's own invocations (keeps prior command analysable).
+    case "$1" in
+      wtf|wtf\ *|*/wtf|*/wtf\ *)
+        __wtf_skip=1
+        return 0
+        ;;
+    esac
+    __wtf_skip=0
     __wtf_cmd="$1"
     __wtf_t0=""
     if (( ${+EPOCHREALTIME} )); then
@@ -34,6 +42,10 @@
 
   __wtf_precmd() {
     local ec=$?
+    if (( ${__wtf_skip:-0} == 1 )); then
+      __wtf_skip=0
+      return 0
+    fi
     local d="$__wtf_dir"
     if [[ ! -d $d ]]; then
       command mkdir -p -- "$d" 2>/dev/null || return 0
