@@ -91,7 +91,9 @@ func runAnalysis(okMode, failMode prompt.Mode) error {
 	defer cancel()
 
 	sys, user := prompt.Build(mode, f)
+	stop := startSpinner("thinking via " + prov.Name())
 	out, err := prov.Complete(ctx, provider.Request{System: sys, Prompt: user, Model: model, Cwd: f.Cwd})
+	stop()
 	if err != nil {
 		return err
 	}

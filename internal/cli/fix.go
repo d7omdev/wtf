@@ -36,7 +36,9 @@ func runFix(cmd *cobra.Command, args []string) error {
 	defer cancel()
 
 	sys, user := prompt.Build(prompt.Fix, f)
+	stop := startSpinner("thinking via " + prov.Name())
 	out, err := prov.Complete(ctx, provider.Request{System: sys, Prompt: user, Model: model, Cwd: f.Cwd})
+	stop()
 	if err != nil {
 		return err
 	}
