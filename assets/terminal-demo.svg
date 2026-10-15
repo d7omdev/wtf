@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="490" viewBox="0 0 1100 490" role="img" aria-labelledby="title desc">
+  <title id="title">wtf terminal walkthrough</title>
+  <desc id="desc">A command fails, wtf explains it briefly, then wtf fix suggests a command and waits for confirmation.</desc>
+  <rect width="1100" height="490" rx="22" fill="#10151d"/>
+  <rect x="1" y="1" width="1098" height="488" rx="21" fill="none" stroke="#35404d" stroke-width="2"/>
+  <path d="M1 66H1099" stroke="#35404d" stroke-width="2"/>
+  <circle cx="35" cy="33" r="7" fill="#ef786f"/><circle cx="60" cy="33" r="7" fill="#eec76e"/><circle cx="85" cy="33" r="7" fill="#8dcba2"/>
+  <text x="550" y="40" fill="#9caab9" text-anchor="middle" font-size="17" font-family="ui-monospace, SFMono-Regular, Consolas, monospace">terminal · wtf</text>
+  <g font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="22">
+    <text x="40" y="119" fill="#85d8a4">$</text><text x="68" y="119" fill="#e8edf3">git checkout feature/typo</text>
+    <text x="40" y="159" fill="#f18783">error:</text><text x="134" y="159" fill="#b8c6d2">pathspec 'feature/typo' did not match any file(s)</text>
+    <path d="M40 185H1060" stroke="#283541"/>
+    <text x="40" y="229" fill="#85d8a4">$</text><text x="68" y="229" fill="#e8edf3">wtf</text>
+    <text x="40" y="272" fill="#f18783">✗ exit 1</text><text x="166" y="272" fill="#8191a2">· main</text>
+    <text x="40" y="308" fill="#d9e5ee">Git couldn't find a branch or file named feature/typo.</text>
+    <path d="M40 336H1060" stroke="#283541"/>
+    <text x="40" y="381" fill="#85d8a4">$</text><text x="68" y="381" fill="#e8edf3">wtf fix</text>
+    <text x="40" y="420" fill="#f18783">✗ exit 1</text><text x="40" y="457" fill="#8bd4f2">$ git switch -c feature/typo</text>
+    <text x="570" y="457" fill="#b8c6d2">Run it? [y/N]</text><rect x="753" y="434" width="12" height="27" rx="2" fill="#85d8a4"/>
+  </g>
+</svg>
